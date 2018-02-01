@@ -1,9 +1,17 @@
 #include <iostream>
 #include <string>
-#include <cctype>
-#include <cstdio>
 using namespace std;
 
+
+
+void p1000() {
+    int a, b;
+    cin >> a >> b;
+    while (cin.good()) {
+        cout << a + b << endl;
+        cin >> a >> b;
+    }
+}
 
 void p1032() {
     int N;
@@ -64,11 +72,57 @@ void p1032() {
     delete[] r;
 }
 
-void p1000() {
-    int a, b;
-    cin >> a >> b;
-    while (cin.good()) {
-        cout << a + b << endl;
-        cin >> a >> b;
+string p1049_fun(const string& pre, const string& in) {
+    // recursion end point
+    if (pre.size() <= 1)
+        return pre;
+
+    size_t n = 0;   // number of nodes in the left sub tree
+    while (in[n] != pre[0])
+        n += 1;
+
+    // recursion
+    return p1049_fun(pre.substr(1, n), in.substr(0, n)) +
+        p1049_fun(pre.substr(1 + n, pre.npos), in.substr(1 + n, in.npos)) +
+        pre[0];
+}
+
+void p1049() {
+    string pre, in;
+    cin >> pre >> in;
+    cout << p1049_fun(pre, in);
+}
+
+void p1374() {
+    string input;
+
+    while (true) {
+        cin >> input;
+        if (input == "END")
+            break;
+
+        size_t i = 0;  // index
+        int sum = 0;    // result
+        bool op = true; // true for +, false for -
+
+        // process a number and the operator before it for each loop
+        while (i < input.size()) {
+            // get operator if exists
+            if (input[i] == '+') {
+                op = true;
+                i += 1;
+            }
+            else if (input[i] == '-') {
+                op = false;
+                i += 1;
+            }
+            // get number
+            int n = 0;
+            while (i < input.size() && input[i] >= '0' && input[i] <= '9')
+                n = (n * 10) + (input[i++] - '0');
+            // do the operation
+            sum += op ? n : -n;
+        }
+        cout << sum << endl;
     }
 }

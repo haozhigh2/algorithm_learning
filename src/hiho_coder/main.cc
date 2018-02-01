@@ -11,10 +11,10 @@
 std::unordered_map<std::string, std::function<void()>> g_funs;
 
 int main(int argc, char** argv) {
-    // add 2 integers
     DEFINE_FUN(p1000)
-    // the longest palindrome sub string
     DEFINE_FUN(p1032)
+    DEFINE_FUN(p1049)
+    DEFINE_FUN(p1374)
 
     if (argc > 1) {
         g_funs[argv[1]]();
