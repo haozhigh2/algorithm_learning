@@ -5,7 +5,7 @@
 using namespace std;
 
 
-extern "C" __declspec(dllexport) int p1032(int argc, char** argv) {
+void p1032() {
     int N;
     cin >> N;
 
@@ -62,62 +62,13 @@ extern "C" __declspec(dllexport) int p1032(int argc, char** argv) {
     }
     delete[] s;
     delete[] r;
-    return 0;
 }
 
-struct p1000Node {
-    p1000Node* next[27];
-    int count;
-
-    p1000Node() : count(0) {
-        for (int i = 0; i < 27; i++)
-            next[i] = 0;
+void p1000() {
+    int a, b;
+    cin >> a >> b;
+    while (cin.good()) {
+        cout << a + b << endl;
+        cin >> a >> b;
     }
-
-    p1000Node* Add(char c) {
-        int idx = int(c - 'a');
-        if (next[idx] == 0)
-            next[idx] = new p1000Node();
-        return next[idx];
-    }
-
-    void End() {
-        count += 1;
-    }
-};
-
-extern "C" __declspec(dllexport) int p1000(int argc, char** argv) {
-    int n, m;
-    p1000Node* head = new p1000Node();
-
-    string line;
-    cin >> n;
-    for (int i = 0; i < n; i++) {
-        cin >> line;
-        p1000Node* h = head;
-        for (unsigned j = 0; j < line.size(); j++)
-            h = h->Add(line[j]);
-        h->End();
-    }
-
-    cin >> m;
-    for (int i = 0; i < m; i++) {
-        cin >> line;
-        p1000Node* h = head;
-        bool fail = false;
-        for (unsigned j = 0; j < line.size(); j++) {
-            h = h->next[line[j] - 'a'];
-            if (h == 0) {
-                fail = true;
-                break;
-            }
-        }
-        if (fail) {
-            cout << 0 << endl;
-            break;
-        }
-        cout << h->count << endl;
-    }
-
-    return 0;
 }
