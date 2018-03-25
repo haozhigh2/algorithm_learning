@@ -13,3 +13,9 @@ DECLARE_FUN(p1049)
 
 // calculator for add and sub of integers
 DECLARE_FUN(p1374)
+
+// get the number of extened binary forms of a decimal digit
+DECLARE_FUN(hiho168)
+
+// simple calculator
+DECLARE_FUN(hiho169)

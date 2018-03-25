@@ -5,9 +5,9 @@
 using namespace std;
 
 /*
-** hiho 166
+** hiho 168
 */
-int hiho166_fun(unsigned n) {
+int hiho168_fun(unsigned n) {
     if (n == 0)
         return 1;
     int num0 = 0;
@@ -20,15 +20,15 @@ int hiho166_fun(unsigned n) {
         num1++;
         n >>= 1;
     }
-    return (num0 * num1 + 1 - num0) * hiho166_fun(n) + num0 * hiho166_fun(n << 1);
+    return (num0 * num1 + 1 - num0) * hiho168_fun(n) + num0 * hiho168_fun(n << 1);
 }
 
-extern "C" __declspec(dllexport) int hiho166(int argc, char** argv) {
+int hiho168() {
     unsigned n;
     cin >> n;
     while ((n & 1) == 1)
         n >>= 1;
-    cout << hiho166_fun(n);
+    cout << hiho168_fun(n);
     return 0;
 }
 
@@ -88,7 +88,7 @@ int hiho169_fun(list<Hiho169Node> l) {
     return l.begin()->digit;
 }
 
-extern "C" __declspec(dllexport) int hiho169(int argc, char** argv) {
+int hiho169() {
     string s;
     cin >> s;
     list<Hiho169Node> l;
