@@ -1,6 +1,6 @@
 
 
-GXX:=g++ -std=c++11
+GXX:=g++ -std=c++14
 BuildDir:=./build
 Hiho:=${BuildDir}/hiho
 

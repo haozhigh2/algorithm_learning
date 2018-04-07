@@ -5,6 +5,9 @@
 // add 2 integers
 DECLARE_FUN(p1000)
 
+// trie tree
+DECLARE_FUN(p1014)
+
 // the longest palindrome sub string
 DECLARE_FUN(p1032)
 

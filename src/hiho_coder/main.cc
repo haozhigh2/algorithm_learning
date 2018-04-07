@@ -14,6 +14,7 @@ unordered_map<string, function<void()>> g_funs;
 
 int main(int argc, char** argv) {
     DEFINE_FUN(p1000)
+    DEFINE_FUN(p1014)
     DEFINE_FUN(p1032)
     DEFINE_FUN(p1049)
     DEFINE_FUN(p1374)

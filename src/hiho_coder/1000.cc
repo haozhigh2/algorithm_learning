@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <iostream>
 #include <string>
+#include <memory>
 using namespace std;
 
 
@@ -14,61 +15,111 @@ void p1000() {
     }
 }
 
+void p1014() {
+	int n, m;
+
+	struct Node {
+		int count;
+		Node* next[26];
+
+		Node() : count(0) {
+			for (int i = 0; i < 26; i++)
+				next[i] = nullptr;
+		};
+		~Node() {
+			for (int i = 0; i < 26; i++)
+				if (next[i] != nullptr)
+					delete next[i];
+		}
+	};
+
+	Node* data = new Node();
+	Node* node;
+	string line;
+
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		cin >> line;
+		node = data;
+		for (auto& c : line) {
+			int idx = static_cast<int>(c - 'a');
+			if (node->next[idx] == nullptr)
+				node->next[idx] = new Node();
+			node = node->next[idx];
+			node->count++;
+		}
+	}
+
+	cin >> m;
+	for (int i = 0; i < m; i++) {
+		cin >> line;
+		node = data;
+		for (auto it = line.begin(); it != line.end() && node != nullptr; it++)
+			node = node->next[static_cast<int>((*it) - 'a')];
+		if (node == nullptr)
+			cout << 0 << endl;
+		else
+			cout << node->count << endl;
+	}
+
+	delete data;
+}
+
 void p1032() {
-    int N;
-    cin >> N;
+	int N;
+	cin >> N;
 
-    char* s = new char[2000002];
-    int* r = new int[2000002];  // radius of each number excluding self
-    for (int x = 0; x < N; x++) {
-        int n = 3;
-        s[0] = '#';
-        s[1] = getchar();
-        while (isspace(s[1]))
-            s[1] = getchar();
-        s[2] = '#';
-        while (true) {
-            char c;
-            c = getchar();
-            if (isspace(c) || c == EOF)
-                break;
-            else {
-                s[n++] = c;
-                s[n++] = '#';
-            }
-        }
+	char* s = new char[2000002];
+	int* r = new int[2000002];  // radius of each number excluding self
+	for (int x = 0; x < N; x++) {
+		int n = 3;
+		s[0] = '#';
+		s[1] = getchar();
+		while (isspace(s[1]))
+			s[1] = getchar();
+		s[2] = '#';
+		while (true) {
+			char c;
+			c = getchar();
+			if (isspace(c) || c == EOF)
+				break;
+			else {
+				s[n++] = c;
+				s[n++] = '#';
+			}
+		}
 
-        int m = 0;  // id of the number with the right most wing
-        int p = 0;  // id of the number with the biggest radius
-        r[0] = 0;
-        for (int i = 1; i < n; i++) {
-            r[i] = 0;
-            if (i >= m + r[m]) {
-                while (i - r[i] - 1 >= 0 && i + r[i] + 1 < n && s[i - r[i] - 1] == s[i + r[i] + 1])
-                    r[i] += 1;
-            }
-            else {
-                int ii = 2 * m - i;
-                if (ii - r[ii] > m - r[m]) {
-                    r[i] = r[ii];
-                }
-                else if (ii - r[ii] < m - r[m]) {
-                    r[i] = m + r[m] - i;
-                }
-                else {
-                    r[i] = m + r[m] - i;
-                    while (i - r[i] - 1 >= 0 && i + r[i] + 1 < n && s[i - r[i] - 1] == s[i + r[i] + 1])
-                        r[i] += 1;
-                }
-            }
+		int m = 0;  // id of the number with the right most wing
+		int p = 0;  // id of the number with the biggest radius
+		r[0] = 0;
+		for (int i = 1; i < n; i++) {
+			r[i] = 0;
+			if (i >= m + r[m]) {
+				while (i - r[i] - 1 >= 0 && i + r[i] + 1 < n && s[i - r[i] - 1] == s[i + r[i] + 1])
+					r[i] += 1;
+			}
+			else {
+				int ii = 2 * m - i;
+				if (ii - r[ii] > m - r[m]) {
+					r[i] = r[ii];
+				}
+				else if (ii - r[ii] < m - r[m]) {
+					r[i] = m + r[m] - i;
+				}
+				else {
+					r[i] = m + r[m] - i;
+					while (i - r[i] - 1 >= 0 && i + r[i] + 1 < n && s[i - r[i] - 1] == s[i + r[i] + 1])
+						r[i] += 1;
+				}
+			}
 
-            if (i + r[i] > m + r[m])
-                m = i;
-            if (r[i] > r[p])
-                p = i;
-        }
-        cout << r[p] << '\n';
-    }
+			if (i + r[i] > m + r[m])
+				m = i;
+			if (r[i] > r[p])
+				p = i;
+		}
+		cout << r[p] << '\n';
+	}
     delete[] s;
     delete[] r;
 }
