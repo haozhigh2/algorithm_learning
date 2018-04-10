@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <iostream>
 #include <string>
+#include <vector>
 #include <memory>
 using namespace std;
 
@@ -63,6 +64,60 @@ void p1014() {
 	}
 
 	delete data;
+}
+
+void p1015() {
+	int N;
+	string pattern;
+	string s;
+	vector<int> next;
+	cin >> N;
+
+	for (int n = 0; n < N; n++) {
+		cin >> pattern;
+		next.resize(pattern.size());
+
+		next[0] = -1;
+		for (int i = 1; i < int(pattern.size()); i++) {
+			next[i] = -1;
+			int m = i - 1;
+			while (next[m] >= 0) {
+				if (pattern[i] == pattern[next[m] + 1]) {
+					next[i] = next[m] + 1;
+					break;
+				}
+				else {
+					m = next[m];
+				}
+			}
+			if (next[i] == -1)
+				if (pattern[i] == pattern[0])
+					next[i] = 0;
+			//cout << "           " << next[i] << endl;
+		}
+
+		cin >> s;
+		int match = 0;
+		int j = 0;	// index in pattern string
+		for (int i = 0; i < int(s.size());) {
+			//cout << j << " " << i << endl;
+			if (s[i] == pattern[j]) {
+				i += 1;
+				j += 1;
+				if (j == int(pattern.size())) {
+					match += 1;
+					j = next[j - 1] >= 0 ? next[j - 1] + 1 : 0;
+				}
+			}
+			else {
+				if (j == 0)
+					i += 1;
+				else
+					j = next[j - 1] >= 0 ? next[j - 1] +1 : 0;
+			}
+		}
+		cout << match << endl;
+	}
 }
 
 void p1032() {

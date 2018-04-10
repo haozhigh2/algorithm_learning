@@ -8,6 +8,9 @@ DECLARE_FUN(p1000)
 // trie tree
 DECLARE_FUN(p1014)
 
+// kmp algorithm
+DECLARE_FUN(p1015)
+
 // the longest palindrome sub string
 DECLARE_FUN(p1032)
 
