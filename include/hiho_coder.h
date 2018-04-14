@@ -20,6 +20,9 @@ DECLARE_FUN(p1038)
 // rect judgement
 DECLARE_FUN(p1040)
 
+// complete pack problem
+DECLARE_FUN(p1043)
+
 // get post-order traversal from pre-order and in-order
 DECLARE_FUN(p1049)
 

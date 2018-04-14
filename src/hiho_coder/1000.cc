@@ -317,6 +317,39 @@ void p1040() {
 	}
 }
 
+void p1043() {
+	int I;	// number of items
+	int N;	// total number of needs available
+	vector<int> ns;	// need for each item
+	vector<int> vs;	// value for each item
+	vector<int> data0;
+	vector<int> data1;
+
+	cin >> I >> N;
+	ns.resize(I);
+	vs.resize(I);
+	for (int i = 0; i < I; i++) {
+		cin >> ns[i] >> vs[i];
+	}
+
+	data0.resize(N + 1, 0);
+	data1.resize(N + 1, 0);
+	for (int i = 0; i < I; i++) {
+		for (int n = 0; n <= N; n++) {
+			int n_tmp = n;
+			int v_tmp = 0;
+			data1[n] = data0[n_tmp];
+			while (n_tmp >= ns[i]) {
+				data1[n] = max(data1[n], v_tmp + vs[i] + data0[n_tmp - ns[i]]);
+				n_tmp -= ns[i];
+				v_tmp += vs[i];
+			}
+		}
+		data0.swap(data1);
+	}
+	cout << data0[N];
+}
+
 string p1049_fun(const string& pre, const string& in) {
     // recursion end point
     if (pre.size() <= 1)
