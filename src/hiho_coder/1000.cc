@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 #include <memory>
 using namespace std;
 
@@ -177,6 +178,46 @@ void p1032() {
 	}
     delete[] s;
     delete[] r;
+}
+
+void p1038() {
+	int I;	// number of items
+	int N;	// total number of needs available
+	vector<int> ns;	// need for each item
+	vector<int> vs;	// value for each item
+	vector<map<int, int>> data;	// data for dp algorithm
+
+	function<void(int, int)> calc = [&](int i, int n) {
+		if (data[i].count(n) > 0)
+			return;
+		if (i == I - 1) {
+			if (n >= ns[i])
+				data[i][n] = vs[i];
+			else
+				data[i][n] = 0;
+		}
+		else {
+			if (n >= ns[i]) {
+				calc(i + 1, n);
+				calc(i + 1, n - ns[i]);
+				data[i][n] = max(data[i + 1][n], vs[i] + data[i + 1][n - ns[i]]);
+			}
+			else {
+				calc(i + 1, n);
+				data[i][n] = data[i + 1][n];
+			}
+		}
+	};
+
+	cin >> I >> N;
+	ns.resize(I);
+	vs.resize(I);
+	data.resize(I);
+	for (int i = 0; i < I; i++) {
+		cin >> ns[i] >> vs[i];
+	}
+	calc(0, N);
+	cout << data[0][N];
 }
 
 void p1040() {

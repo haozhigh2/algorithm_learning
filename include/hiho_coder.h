@@ -14,6 +14,9 @@ DECLARE_FUN(p1015)
 // the longest palindrome sub string
 DECLARE_FUN(p1032)
 
+// 0/1 pack problem
+DECLARE_FUN(p1038)
+
 // rect judgement
 DECLARE_FUN(p1040)
 
