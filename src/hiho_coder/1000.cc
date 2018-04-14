@@ -179,6 +179,112 @@ void p1032() {
     delete[] r;
 }
 
+void p1040() {
+	int T;
+	cin >> T;
+
+	struct Vector {
+		int x;
+		int y;
+
+		Vector(int x_, int y_): x(x_), y(y_) {}
+		Vector(const Vector& v): x(v.x), y(v.y) {}
+		inline bool zero() const {
+			return x == 0 && y == 0;
+		}
+		inline bool parallel(const Vector& v) const {
+			return x * v.y == y * v.x;
+		}
+		inline bool perpendicular(const Vector& v) const {
+			return x * v.x + y * v.y == 0;
+		}
+	};
+
+	struct Line {
+		int x1;
+		int y1;
+		int x2;
+		int y2;
+
+		Line() { cin >> x1 >> y1 >> x2 >> y2; }
+		Line(int x1_, int y1_, int x2_, int y2_): x1(x1_), y1(y1_), x2(x2_), y2(y2_) {}
+		Vector vector() const {
+			return Vector(x2 - x1, y2 - y1);
+		}
+		inline bool parallel(const Line& l) const {
+			return vector().parallel(l.vector());
+		}
+		inline bool rect(const Line& l) const {
+			Vector v1(vector());
+			Vector v2(l.vector());
+			Vector v3(l.x1 - x1, l.y1 - y1);
+			Vector v4(l.x2 - x2, l.y2 - y2);
+			Vector v5(l.x2 - x1, l.y2 - y1);
+			Vector v6(l.x1 - x2, l.y1 - y2);
+			// parallel
+			if (v1.zero() || v2.zero())
+				return false;
+			if (! v1.parallel(v2))
+				return false;
+			// not in the same line
+			if (v3.zero() || v1.parallel(v3))
+				return false;
+			// rect
+			if (v3.perpendicular(v1) && v4.perpendicular(v1))
+				return true;
+			if (v5.perpendicular(v1) && v6.perpendicular(v1))
+				return true;
+			return false;
+		}
+		inline bool contain(int x, int y) const {
+			return (x == x1 && y == y1) || (x == x2 && y == y2);
+		}
+		inline bool links(const Line& l1, const Line& l2) const {
+			if (l1.contain(x1, y1)) {
+				return l2.contain(x2, y2);
+			}
+			else
+				return l1.contain(x2, y2) && l2.contain(x1, y1);
+		}
+		inline bool operator!=(const Line& l) const {
+			if (x1 == l.x1 && y1 == l.y1)
+				return !(x2 == l.x2 && y2 == l.y2);
+			else
+				return !((x1 == l.x2 && y1 == l.y2) && (x2 == l.x1 && y2 == l.y1));
+		}
+	};
+
+	for (int t = 0; t < T; t++) {
+		Line l1;
+		Line l2;
+		Line l3;
+		Line l4;
+
+		if (l1.rect(l2)) {
+			if (l3.links(l1, l2) && l4.links(l1, l2) && l3.parallel(l4) && l3 != l4)
+				cout << "YES" << endl;
+			else
+				cout << "NO" << endl;
+			continue;
+		}
+		if (l1.rect(l3)) {
+			if (l2.links(l1, l3) && l4.links(l1, l3) && l2.parallel(l4) && l2 != l4)
+				cout << "YES" << endl;
+			else
+				cout << "NO" << endl;
+			continue;
+		}
+		if (l1.rect(l4)) {
+			if (l2.links(l1, l4) && l3.links(l1, l4) && l2.parallel(l3) && l2 != l3)
+				cout << "YES" << endl;
+			else
+				cout << "NO" << endl;
+			continue;
+		}
+		cout << "NO" << endl;
+	}
+}
+
 string p1049_fun(const string& pre, const string& in) {
     // recursion end point
     if (pre.size() <= 1)

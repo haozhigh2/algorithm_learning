@@ -14,6 +14,9 @@ DECLARE_FUN(p1015)
 // the longest palindrome sub string
 DECLARE_FUN(p1032)
 
+// rect judgement
+DECLARE_FUN(p1040)
+
 // get post-order traversal from pre-order and in-order
 DECLARE_FUN(p1049)
 
