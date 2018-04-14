@@ -185,39 +185,30 @@ void p1038() {
 	int N;	// total number of needs available
 	vector<int> ns;	// need for each item
 	vector<int> vs;	// value for each item
-	vector<map<int, int>> data;	// data for dp algorithm
-
-	function<void(int, int)> calc = [&](int i, int n) {
-		if (data[i].count(n) > 0)
-			return;
-		if (i == I - 1) {
-			if (n >= ns[i])
-				data[i][n] = vs[i];
-			else
-				data[i][n] = 0;
-		}
-		else {
-			if (n >= ns[i]) {
-				calc(i + 1, n);
-				calc(i + 1, n - ns[i]);
-				data[i][n] = max(data[i + 1][n], vs[i] + data[i + 1][n - ns[i]]);
-			}
-			else {
-				calc(i + 1, n);
-				data[i][n] = data[i + 1][n];
-			}
-		}
-	};
+	vector<int> data0;
+	vector<int> data1;
 
 	cin >> I >> N;
 	ns.resize(I);
 	vs.resize(I);
-	data.resize(I);
 	for (int i = 0; i < I; i++) {
 		cin >> ns[i] >> vs[i];
 	}
-	calc(0, N);
-	cout << data[0][N];
+
+	data0.resize(N + 1, 0);
+	data1.resize(N + 1, 0);
+	for (int i = 0; i < I; i++) {
+		for (int n = 0; n <= N; n++) {
+			if (n >= ns[i]) {
+				data1[n] = max(data0[n], vs[i] + data0[n - ns[i]]);
+			}
+			else {
+				data1[n] = data0[n];
+			}
+		}
+		data0.swap(data1);
+	}
+	cout << data0[N];
 }
 
 void p1040() {
