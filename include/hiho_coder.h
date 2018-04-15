@@ -17,6 +17,9 @@ DECLARE_FUN(p1032)
 // 0/1 pack problem
 DECLARE_FUN(p1038)
 
+// char elimination
+DECLARE_FUN(p1039)
+
 // rect judgement
 DECLARE_FUN(p1040)
 

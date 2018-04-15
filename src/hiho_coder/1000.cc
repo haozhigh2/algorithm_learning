@@ -121,7 +121,59 @@ void p1015() {
 	}
 }
 
+int p1032_fun(const string& s0) {
+	string s;
+	s.resize(s0.size() * 2 + 1);
+
+	for (unsigned i = 0; i < s0.size(); i++) {
+		s[i * 2] = '#';
+		s[i * 2 + 1] = s0[i];
+	}
+	s[s0.size() * 2] = '#';
+
+	vector<int> r;	// max redius centered at each index
+	r.resize(s.size(), 0);
+	int m = 0;  // id of the number with the right most wing
+	int N = static_cast<int>(s.size());
+	for (int i = 1; i < N; i++) {
+		if (i >= m + r[m]) {
+			while (i - r[i] - 1 >= 0 && i + r[i] + 1 < N && s[i - r[i] - 1] == s[i + r[i] + 1])
+				r[i] += 1;
+		}
+		else {
+			int ii = 2 * m - i;
+			if (ii - r[ii] > m - r[m]) {
+				r[i] = r[ii];
+			}
+			else if (ii - r[ii] < m - r[m]) {
+				r[i] = m + r[m] - i;
+			}
+			else {
+				r[i] = m + r[m] - i;
+				while (i - r[i] - 1 >= 0 && i + r[i] + 1 < N && s[i - r[i] - 1] == s[i + r[i] + 1])
+					r[i] += 1;
+			}
+		}
+
+		if (i + r[i] > m + r[m])
+			m = i;
+	}
+
+	int p = 0;  // id of the number with the biggest radius
+	for (int i = 0; i < N; i++)
+		p = max(p, r[i]);
+	return p;
+}
+
 void p1032() {
+	int N;
+	cin >> N;
+	string s;
+	for (int i = 0; i < N; i++) {
+		cin >> s;
+		cout << p1032_fun(s) << endl;
+	}
+	/*
 	int N;
 	cin >> N;
 
@@ -178,6 +230,7 @@ void p1032() {
 	}
     delete[] s;
     delete[] r;
+	*/
 }
 
 void p1038() {
@@ -209,6 +262,61 @@ void p1038() {
 		data0.swap(data1);
 	}
 	cout << data0[N];
+}
+
+void p1039() {
+	int N;
+	cin >> N;
+
+	auto f = [](string& s0) {
+		int len = s0.size();
+		string s;
+		while (true) {
+			s.resize(0);
+			s.reserve(s0.size());
+
+			int i = 0;
+			while (i < (int)s0.size()) {
+				if (i == (int)s0.size() - 1) {
+					s.push_back(s0[i++]);
+				}
+				else if (s0[i + 1] != s0[i]) {
+					s.push_back(s0[i++]);
+				}
+				else {
+					int j = i + 1;
+					while (j < (int)s0.size() && s0[j] == s0[i])
+						j++;
+					i = j;
+				}
+			}
+
+			if (s.size() == s0.size())
+				break;
+			s.swap(s0);
+		}
+		return int(len - s.size());
+	};
+
+	string s;
+	string s0;
+	for (int n = 0; n < N; n++) {
+		cin >> s0;
+
+		int result = 0;
+		for (int i = 0; i <= (int)s0.size(); i++)
+			for (int j = 0; j < 3; j++) {
+				s.resize(s0.size() + 1);
+				int k;
+				for (k = 0; k < i; k++)
+					s[k] = s0[k];
+				s[i] = 'A' + j;
+				for (k = i + 1; k <= (int)s0.size(); k++)
+					s[k] = s0[k - 1];
+				result = max(result, f(s));
+			}
+		cout << result << endl;
+	}
 }
 
 void p1040() {
