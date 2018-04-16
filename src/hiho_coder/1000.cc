@@ -2,7 +2,9 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <deque>
 #include <map>
+#include <list>
 #include <memory>
 using namespace std;
 
@@ -422,6 +424,160 @@ void p1040() {
 			continue;
 		}
 		cout << "NO" << endl;
+	}
+}
+
+void p1041() {
+	int T;
+	cin >> T;
+
+	struct Node {
+		list<int> next;
+		int parent;
+
+		Node(): parent(0) {}
+	};
+
+	Node nodes[101];		// first element is not used
+	int paths[101][100];	// first element is not used
+	int path_size[101];		// first element is not used
+	bool visited[101];		// first element is not used
+
+	for (int t = 0; t < T; t++) {
+		int N;
+		cin >> N;
+
+		// init data for each data set
+		for (int n = 0; n <= N; n++) {
+			nodes[n].next.clear();
+			nodes[n].parent = 0;
+			path_size[n] = 0;
+			visited[n] = false;
+		}
+
+		// input graph 
+		int a, b;
+		for (int n = 1; n < N; n++) {
+			cin >> a >> b;
+			nodes[a].next.push_back(b);
+			nodes[b].next.push_back(a);
+		}
+
+		// establish tree
+		//function<void(int, int)> fe = [&](int id, int p_id) {
+		//	Node& node = nodes[id];
+		//	node.parent = p_id;
+		//	node.next.remove(p_id);
+		//	for (auto it = node.next.begin(); it != node.next.end(); it++)
+		//		fe(*it, id);
+		//};
+		//for (auto it = nodes[1].next.begin(); it != nodes[1].next.end(); it++)
+		//	fe(*it, 1);
+		deque<int> ids;
+		deque<int> p_ids;
+		ids.push_back(1);
+		p_ids.push_back(0);
+		while (ids.size() > 0) {
+			int id = ids.front();
+			int p_id = p_ids.front();
+			ids.pop_front();
+			p_ids.pop_front();
+			if (p_id != 0) {
+				nodes[id].parent = p_id;
+				nodes[id].next.remove(p_id);
+			}
+			cout << "    " << id << " " << p_id << endl;
+			for (auto it = nodes[id].next.begin(); it != nodes[id].next.end(); it++) {
+				ids.push_back(*it);
+				p_ids.push_back(id);
+			}
+		}
+
+		// establish paths for each element
+		for (int n = 1; n <= N; n++) {
+			int n_tmp = n;
+			while (n_tmp != 0) {
+				paths[n][path_size[n]] = n_tmp;
+				path_size[n] ++;
+				n_tmp = nodes[n_tmp].parent;
+			}
+
+			// reverse path
+			for (int x = 0; x < path_size[n]; x++) {
+				int size_tmp = paths[n][x];
+				paths[n][x] = paths[n][path_size[n] - 1 - x];
+				paths[n][path_size[n] - 1 - x] = size_tmp;
+			}
+		}
+
+		// input requested path
+		int m;
+		cin >> m;
+
+		// visit to first city
+		int id;		// city id
+		int id_pre;	// previous city id in the requested path
+		cin >> id;
+		for (int i = 0; i < path_size[id]; i++)
+			visited[paths[id][i]] = true;
+
+		//cout << endl;
+		//for (int n = 1; n <= N; n++)
+		//	cout << visited[n] << ' ';
+		//cout << endl;
+
+		// visit city one by one in the requested path
+		bool pass = true;
+		for (int x = 1; x < m; x++) {
+			id_pre = id;
+			cin >> id;
+			//cout << endl << "    " << id_pre << " " << id << endl;
+			if (visited[id]) {
+				pass = false;
+				break;
+			}
+
+			// find last common city on paths of city ms[m] and city ms[m - 1]
+			int i = -1;
+			while (i + 1 < path_size[id_pre] &&
+					i + 1 < path_size[id] &&
+					paths[id_pre][i + 1] == paths[id][i + 1])
+				i ++;
+
+			// function to visit all cities below a city id
+			//function<void(int)> f = [&](int id) {
+			//	visited[id] = true;
+			//	for (auto it = nodes[id].next.begin(); it != nodes[id].next.end(); it++)
+			//		f(*it);
+			//};
+
+			// visit path to city id
+			for (int i2 = i + 1; i2 < path_size[id]; i2++)
+				visited[paths[id][i2]] = true;
+			// visit all cities from last common city to id_pre branch
+			if (i + 1 < path_size[id_pre]) {
+				vector<int> ids;
+				ids.push_back(paths[id_pre][i + 1]);
+				while (ids.size() > 0) {
+					int idd = ids.back();
+					ids.pop_back();
+					visited[idd] = true;
+					for (auto it = nodes[idd].next.begin(); it != nodes[idd].next.end(); it++)
+						ids.push_back(*it);
+				}
+			}
+				//f(paths[id_pre][i + 1]);
+
+			//cout << endl;
+			//for (int n = 1; n <= N; n++)
+			//	cout << visited[n] << ' ';
+			//cout << endl;
+		}
+
+		if (pass)
+			cout << "YES" << endl;
+		else
+			cout << "NO" << endl;
 	}
 }
 

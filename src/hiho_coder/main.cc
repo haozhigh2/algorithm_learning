@@ -20,6 +20,7 @@ int main(int argc, char** argv) {
 	DEFINE_FUN(p1038)
 	DEFINE_FUN(p1039)
 	DEFINE_FUN(p1040)
+	DEFINE_FUN(p1041)
 	DEFINE_FUN(p1043)
     DEFINE_FUN(p1049)
     DEFINE_FUN(p1374)

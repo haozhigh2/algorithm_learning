@@ -23,6 +23,9 @@ DECLARE_FUN(p1039)
 // rect judgement
 DECLARE_FUN(p1040)
 
+// touring on national day
+DECLARE_FUN(p1041)
+
 // complete pack problem
 DECLARE_FUN(p1043)
 
