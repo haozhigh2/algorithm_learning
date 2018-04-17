@@ -428,9 +428,6 @@ void p1040() {
 }
 
 void p1041() {
-	int T;
-	cin >> T;
-
 	struct Node {
 		list<int> next;
 		int parent;
@@ -438,21 +435,34 @@ void p1041() {
 		Node(): parent(0) {}
 	};
 
-	Node nodes[101];		// first element is not used
-	int paths[101][100];	// first element is not used
-	int path_size[101];		// first element is not used
-	bool visited[101];		// first element is not used
+	struct City {
+		int id;
+		int parent_id;
 
+		City(int id_, int p): id(id_), parent_id(p) {};
+	};
+
+	vector<Node> nodes;			// first element is not used
+	vector<deque<int>> paths;	// first element is not used
+	vector<bool> flags;		// first element is not used
+	deque<int> ms;
+
+	int T;
+	cin >> T;
 	for (int t = 0; t < T; t++) {
 		int N;
 		cin >> N;
+
+		nodes.resize(N + 1);
+		paths.resize(N + 1);
+		flags.resize(N + 1);
 
 		// init data for each data set
 		for (int n = 0; n <= N; n++) {
 			nodes[n].next.clear();
 			nodes[n].parent = 0;
-			path_size[n] = 0;
-			visited[n] = false;
+			paths[n].clear();
+			flags[n] = false;
 		}
 
 		// input graph 
@@ -463,50 +473,28 @@ void p1041() {
 			nodes[b].next.push_back(a);
 		}
 
-		// establish tree
-		//function<void(int, int)> fe = [&](int id, int p_id) {
-		//	Node& node = nodes[id];
-		//	node.parent = p_id;
-		//	node.next.remove(p_id);
-		//	for (auto it = node.next.begin(); it != node.next.end(); it++)
-		//		fe(*it, id);
-		//};
-		//for (auto it = nodes[1].next.begin(); it != nodes[1].next.end(); it++)
-		//	fe(*it, 1);
-		deque<int> ids;
-		deque<int> p_ids;
-		ids.push_back(1);
-		p_ids.push_back(0);
-		while (ids.size() > 0) {
-			int id = ids.front();
-			int p_id = p_ids.front();
-			ids.pop_front();
-			p_ids.pop_front();
-			if (p_id != 0) {
-				nodes[id].parent = p_id;
-				nodes[id].next.remove(p_id);
+		// set parent of each node from city number 1
+		deque<City> cities;
+		cities.emplace_back(1, 0);
+		while (cities.size() > 0) {
+			const City city = cities.front();
+			Node& node = nodes[city.id];
+			cities.pop_front();
+			if (city.parent_id != 0) {
+				node.parent = city.parent_id;
+				node.next.remove(city.parent_id);
 			}
-			cout << "    " << id << " " << p_id << endl;
-			for (auto it = nodes[id].next.begin(); it != nodes[id].next.end(); it++) {
-				ids.push_back(*it);
-				p_ids.push_back(id);
-			}
+			//cout << "    " << id << " " << p_id << endl;
+			for (auto it = node.next.begin(); it != node.next.end(); it++)
+				cities.emplace_back(*it, city.id);
 		}
 
 		// establish paths for each element
 		for (int n = 1; n <= N; n++) {
 			int n_tmp = n;
 			while (n_tmp != 0) {
-				paths[n][path_size[n]] = n_tmp;
-				path_size[n] ++;
+				paths[n].push_front(n_tmp);
 				n_tmp = nodes[n_tmp].parent;
-			}
-
-			// reverse path
-			for (int x = 0; x < path_size[n]; x++) {
-				int size_tmp = paths[n][x];
-				paths[n][x] = paths[n][path_size[n] - 1 - x];
-				paths[n][path_size[n] - 1 - x] = size_tmp;
 			}
 		}
 
@@ -514,64 +502,54 @@ void p1041() {
 		int m;
 		cin >> m;
 
+		// input ms
+		ms.resize(m);
+		for (int i = 0; i < m; i++) {
+			cin >> ms[i];
+		}
+
 		// visit to first city
 		int id;		// city id
 		int id_pre;	// previous city id in the requested path
-		cin >> id;
-		for (int i = 0; i < path_size[id]; i++)
-			visited[paths[id][i]] = true;
-
-		//cout << endl;
-		//for (int n = 1; n <= N; n++)
-		//	cout << visited[n] << ' ';
-		//cout << endl;
+		id = ms.front();
+		ms.pop_front();
+		for (int p_idx = 0; p_idx < (int)paths[id].size(); p_idx++)
+			flags[paths[id][p_idx]] = true;
 
 		// visit city one by one in the requested path
 		bool pass = true;
 		for (int x = 1; x < m; x++) {
 			id_pre = id;
-			cin >> id;
-			//cout << endl << "    " << id_pre << " " << id << endl;
-			if (visited[id]) {
+			id = ms.front();
+			ms.pop_front();
+			if (flags[id]) {
 				pass = false;
 				break;
 			}
 
-			// find last common city on paths of city ms[m] and city ms[m - 1]
+			// find last common city on paths of city id and city id_pre
 			int i = -1;
-			while (i + 1 < path_size[id_pre] &&
-					i + 1 < path_size[id] &&
+			while (i + 1 < (int)paths[id_pre].size() &&
+					i + 1 < (int)paths[id].size() &&
 					paths[id_pre][i + 1] == paths[id][i + 1])
-				i ++;
-
-			// function to visit all cities below a city id
-			//function<void(int)> f = [&](int id) {
-			//	visited[id] = true;
-			//	for (auto it = nodes[id].next.begin(); it != nodes[id].next.end(); it++)
-			//		f(*it);
-			//};
+				i++;
 
 			// visit path to city id
-			for (int i2 = i + 1; i2 < path_size[id]; i2++)
-				visited[paths[id][i2]] = true;
+			for (int i2 = i + 1; i2 < (int)paths[id].size(); i2++)
+				flags[paths[id][i2]] = true;
+
 			// visit all cities from last common city to id_pre branch
-			if (i + 1 < path_size[id_pre]) {
-				vector<int> ids;
-				ids.push_back(paths[id_pre][i + 1]);
-				while (ids.size() > 0) {
-					int idd = ids.back();
-					ids.pop_back();
-					visited[idd] = true;
-					for (auto it = nodes[idd].next.begin(); it != nodes[idd].next.end(); it++)
-						ids.push_back(*it);
+			if (i + 1 < (int)paths[id_pre].size()) {
+				deque<int> city_ids;
+				city_ids.push_back(paths[id_pre][i + 1]);
+				while (city_ids.size() > 0) {
+					int city_id = city_ids.front();
+					city_ids.pop_front();
+					flags[city_id] = true;
+					for (auto it = nodes[city_id].next.begin(); it != nodes[city_id].next.end(); it++)
+						city_ids.push_back(*it);
 				}
 			}
-				//f(paths[id_pre][i + 1]);
-
-			//cout << endl;
-			//for (int n = 1; n <= N; n++)
-			//	cout << visited[n] << ' ';
-			//cout << endl;
 		}
 
 		if (pass)
