@@ -52,7 +52,7 @@ unsigned inversions(vector<T>& v, unsigned l, unsigned r) {
 }
 
 
-extern "C" __declspec(dllexport) int P02_04_inversions(int argc, char** argv) {
+void p2_4_inversions() {
     RandInt rand_int{ -(1 << 20), 1 << 20 };
     for (unsigned i = 0; i < 10; i++) {
         vector<int> v0{ rand_int.NextVector(1000) };
@@ -75,9 +75,6 @@ extern "C" __declspec(dllexport) int P02_04_inversions(int argc, char** argv) {
             cout << "########  Fail  ########" << endl;
             cout << n0 << ' ' << n1 << endl;
             Help::PrintVector(v1);
-            getchar();
         }
     }
-    getchar();
-    return 0;
 }

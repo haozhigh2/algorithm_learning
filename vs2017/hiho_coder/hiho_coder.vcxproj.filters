@@ -21,11 +21,11 @@
     <ClCompile Include="..\..\src\hiho_coder\main.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\hiho_coder\hiho.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\common.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\hiho_coder.h">
       <Filter>Header Files</Filter>
     </ClInclude>

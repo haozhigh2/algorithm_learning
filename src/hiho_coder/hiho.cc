@@ -23,13 +23,12 @@ int hiho168_fun(unsigned n) {
     return (num0 * num1 + 1 - num0) * hiho168_fun(n) + num0 * hiho168_fun(n << 1);
 }
 
-int hiho168() {
+void hiho168() {
     unsigned n;
     cin >> n;
     while ((n & 1) == 1)
         n >>= 1;
     cout << hiho168_fun(n);
-    return 0;
 }
 
 /*
@@ -88,7 +87,7 @@ int hiho169_fun(list<Hiho169Node> l) {
     return l.begin()->digit;
 }
 
-int hiho169() {
+void hiho169() {
     string s;
     cin >> s;
     list<Hiho169Node> l;
@@ -119,5 +118,4 @@ int hiho169() {
         i += 1;
     }
     cout << hiho169_fun(l);
-    return 0;
 }

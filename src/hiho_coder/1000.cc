@@ -6,6 +6,7 @@
 #include <map>
 #include <list>
 #include <memory>
+#include <algorithm>
 using namespace std;
 
 
@@ -271,7 +272,7 @@ void p1039() {
 	cin >> N;
 
 	auto f = [](string& s0) {
-		int len = s0.size();
+		size_t len = s0.size();
 		string s;
 		while (true) {
 			s.resize(0);

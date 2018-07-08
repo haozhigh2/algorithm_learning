@@ -32,7 +32,7 @@ T maximum_subarray(const vector<T>& v) {
     return max_sum;
 }
 
-extern "C" __declspec(dllexport) int E04_01_maximum_subarray(int argc, char** argv) {
+void e4_1_maximum_subarray() {
     RandInt rand_int{ -(1 << 15), 1 << 15 };
     for (unsigned i = 0; i < 10; i++) {
         vector<int> v0{ rand_int.NextVector(1000) };
@@ -48,9 +48,6 @@ extern "C" __declspec(dllexport) int E04_01_maximum_subarray(int argc, char** ar
             cout << "########  Fail  ########" << endl;
             cout << n0 << ' ' << n1 << endl;
             Help::PrintVector(v0);
-            getchar();
         }
     }
-    getchar();
-    return 0;
 }

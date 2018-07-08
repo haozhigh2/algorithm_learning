@@ -97,7 +97,7 @@ void heap_sort(vector<T>& v) {
     }
 }
 
-extern "C" __declspec(dllexport) int C02_01_insertion_sort(int argc, char** argv) {
+void c2_s1_insertion_sort() {
     RandInt rand_int{ -(1 << 20), 1 << 20 };
     for (unsigned i = 0; i < 10; i++) {
         vector<int> v0{ rand_int.NextVector(1000) };
@@ -114,12 +114,10 @@ extern "C" __declspec(dllexport) int C02_01_insertion_sort(int argc, char** argv
             cout << "########  Pass  ########" << endl;
         else
             cout << "########  Fail  ########" << endl;
-        getchar();
     }
-    return 0;
 }
 
-extern "C" __declspec(dllexport) int C02_03_merge_sort(int argc, char** argv) {
+void c2_s3_merge_sort() {
     RandInt rand_int{ -(1 << 20), 1 << 20 };
     for (unsigned i = 0; i < 10; i++) {
         vector<int> v0{ rand_int.NextVector(1000) };
@@ -137,11 +135,9 @@ extern "C" __declspec(dllexport) int C02_03_merge_sort(int argc, char** argv) {
         else
             cout << "########  Fail  ########" << endl;
     }
-    getchar();
-    return 0;
 }
 
-extern "C" __declspec(dllexport) int C06_04_heap_sort(int argc, char** argv) {
+void c6_s4_heap_sort() {
     RandInt rand_int{ -(1 << 20), 1 << 20 };
     for (unsigned i = 0; i < 10; i++) {
         vector<int> v0{ rand_int.NextVector(RandInt(100, 1000).Next()) };
@@ -158,11 +154,8 @@ extern "C" __declspec(dllexport) int C06_04_heap_sort(int argc, char** argv) {
             cout << "########  Pass  ########" << endl;
         else {
             cout << "########  Fail  ########" << endl;
-            Help::PrintVector(v0);
-            Help::PrintVector(v1);
-            getchar();
+			//Help::PrintVector(v0);
+			//Help::PrintVector(v1);
         }
     }
-    getchar();
-    return 0;
 }
