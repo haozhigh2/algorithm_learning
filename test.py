@@ -1,6 +1,7 @@
 
 import sys
 import os
+import subprocess
 
 def get_case():
     assert len(sys.argv) > 1, "Need an extra argument to specify case"
@@ -26,16 +27,17 @@ def compile(case):
     assert os.path.isdir("build")
     os.chdir("build")
 
-    cc_file = os.path.join("../src", "{}.cc".format(case))
-    bin_file = os.path.join("{}.exe".format(case))
+    cc_file = "../src/{}.cc".format(case)
+    bin_file = "{}.exe".format(case)
 
     ## check modified time of source file and bin file
-    if os.path.getmtime(bin_file) >= os.path.getmtime(cc_file):
+    if os.path.exists(bin_file) and os.path.getmtime(bin_file) >= os.path.getmtime(cc_file):
         print("build/{} is up-to-data, no need to rebuild".format(bin_file))
     else:
-        CXX = r"C:\Program Files\LLVM\bin\clang++.exe"
-        cmd = r"{} -std=c++14 {} -o {}".format(CXX, cc_file, bin_file)
-        os.system(cmd)
+        CXX = r"C:/Program Files/LLVM/bin/clang++.exe"
+        cmd = '"{}" -std=c++14 "{}" -o "{}"'.format(CXX, cc_file, bin_file)
+        print(cmd)
+        subprocess.call(cmd, shell = True)
 
     os.chdir("..")
 
@@ -45,8 +47,8 @@ def run(case):
     assert os.path.isdir("test")
     os.chdir("test")
 
-    bin_file = os.path.join("../build/{}.exe".format(case))
-    os.system(bin_file)
+    bin_file = "../build/{}.exe".format(case)
+    subprocess.call('"{}"'.format(bin_file))
 
     os.chdir("..")
 
