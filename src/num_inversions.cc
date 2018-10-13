@@ -1,6 +1,5 @@
-#include "rand.h"
-#include "help.h"
-
+#include "../include/rand.h"
+#include <iostream>
 #include <unordered_set>
 using namespace std;
 
@@ -52,7 +51,7 @@ unsigned inversions(vector<T>& v, unsigned l, unsigned r) {
 }
 
 
-void p2_4_inversions() {
+int main(int argc, char** argv) {
     RandInt rand_int{ -(1 << 20), 1 << 20 };
     for (unsigned i = 0; i < 10; i++) {
         vector<int> v0{ rand_int.NextVector(1000) };
@@ -60,12 +59,8 @@ void p2_4_inversions() {
         vector<int> v1(s.begin(), s.end());
         vector<int> v2(v1);
 
-        //Help::PrintVector(v1);
-
         unsigned n0{ inversions_baseline(v1) };
         unsigned n1{ inversions(v2, 0, v2.size() - 1) };
-
-        //Help::PrintVector(v1);
 
         if (n0 == n1) {
             cout << "########  Pass  ########" << endl;
@@ -74,7 +69,8 @@ void p2_4_inversions() {
         else {
             cout << "########  Fail  ########" << endl;
             cout << n0 << ' ' << n1 << endl;
-            Help::PrintVector(v1);
         }
     }
+
+    return 0;
 }
