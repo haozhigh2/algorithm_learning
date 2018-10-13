@@ -1,7 +1,6 @@
 
-#include "rand.h"
-#include "help.h"
-
+#include "../include/rand.h"
+#include <iostream>
 using namespace std;
 
 template<typename T>
@@ -32,7 +31,7 @@ T maximum_subarray(const vector<T>& v) {
     return max_sum;
 }
 
-void e4_1_maximum_subarray() {
+int main(int argc, char** argv) {
     RandInt rand_int{ -(1 << 15), 1 << 15 };
     for (unsigned i = 0; i < 10; i++) {
         vector<int> v0{ rand_int.NextVector(1000) };
@@ -47,7 +46,6 @@ void e4_1_maximum_subarray() {
         else {
             cout << "########  Fail  ########" << endl;
             cout << n0 << ' ' << n1 << endl;
-            Help::PrintVector(v0);
         }
     }
 }
