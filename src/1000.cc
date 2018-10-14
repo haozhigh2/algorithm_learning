@@ -11,15 +11,6 @@ using namespace std;
 
 
 
-void p1000() {
-    int a, b;
-    cin >> a >> b;
-    while (cin.good()) {
-        cout << a + b << endl;
-        cin >> a >> b;
-    }
-}
-
 void p1014() {
 	int n, m;
 
