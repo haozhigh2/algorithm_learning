@@ -1,4 +1,4 @@
-#include "../include/rand.h"
+#include "rand.h"
 #include <iostream>
 #include <unordered_set>
 using namespace std;
@@ -60,7 +60,7 @@ int main(int argc, char** argv) {
         vector<int> v2(v1);
 
         unsigned n0{ inversions_baseline(v1) };
-        unsigned n1{ inversions(v2, 0, v2.size() - 1) };
+        unsigned n1{ inversions(v2, 0, unsigned int(v2.size()) - 1) };
 
         if (n0 == n1) {
             cout << "########  Pass  ########" << endl;

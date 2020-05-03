@@ -1,4 +1,4 @@
-#include "../include/rand.h"
+#include "rand.h"
 #include <iostream>
 
 
@@ -37,8 +37,8 @@ void heap_sort(vector<T>& v) {
     /*
     ** build max heap
     */
-    for (unsigned i = v.size() / 2 - 1; i >= 0; ) {
-        max_heapify(v, v.size(), i);
+    for (unsigned i = unsigned int(v.size()) / 2 - 1; i >= 0; ) {
+        max_heapify(v, unsigned int(v.size()), i);
         if (i == 0)
             break;
         i -= 1;
@@ -47,7 +47,7 @@ void heap_sort(vector<T>& v) {
     /*
     ** sort
     */
-    for (unsigned n = v.size() - 1; n > 0; n--) {
+    for (unsigned n = unsigned int(v.size()) - 1; n > 0; n--) {
         T t{ v[n] };
         v[n] = v[0];
         v[0] = t;

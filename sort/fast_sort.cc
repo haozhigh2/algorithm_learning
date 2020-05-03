@@ -1,4 +1,4 @@
-#include "../include/rand.h"
+#include "rand.h"
 #include <iostream>
 
 
@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
         vector<int> v1{ v0 };
 
         selection_sort(v0);
-        fast_sort(v1, 0, v1.size() - 1);
+        fast_sort(v1, 0, int(v1.size()) - 1);
 
         for (const auto& x: v1)
             cout << x << " ";

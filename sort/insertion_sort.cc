@@ -1,5 +1,4 @@
-
-#include "../include/rand.h"
+#include "rand.h"
 #include <iostream>
 
 

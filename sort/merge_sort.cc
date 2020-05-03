@@ -1,5 +1,5 @@
 
-#include "../include/rand.h"
+#include "rand.h"
 #include <iostream>
 
 template<typename T>
@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
         vector<int> v1{ v0 };
 
         selection_sort(v0);
-        merge_sort(v1, 0, v1.size() - 1);
+        merge_sort(v1, 0, unsigned int(v1.size()) - 1);
 
         if (v0 == v1)
             cout << "########  Pass  ########" << endl;
